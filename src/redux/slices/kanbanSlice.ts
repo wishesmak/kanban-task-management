@@ -1,11 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { IBoard } from "../../types/types";
 
 interface IState {
-  boards: [];
+  boards: IBoard[];
 }
 
 const initialState: IState = {
-  boards: [],
+  boards: [
+    {
+      id: "12314123",
+      title: "Board 1",
+      todos: {
+        todo: [],
+        doing: [],
+        done: [],
+      },
+    },
+  ],
 };
 
 const kanbanSlice = createSlice({

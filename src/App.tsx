@@ -1,7 +1,18 @@
-import React from 'react';
+import { Board, Header, Sidebar } from "./components";
+import { useToggle } from "./hooks";
 
 function App() {
-  return <div className="font-semibold text-2xl">Kanban</div>;
+  const [isVisible, toogleVisible] = useToggle(false);
+
+  return (
+    <div className="flex">
+      <Sidebar isVisible={isVisible} toogleVisible={toogleVisible} />
+      <div className="w-full">
+        <Header isVisible={isVisible} toogleVisible={toogleVisible} />
+        <Board />
+      </div>
+    </div>
+  );
 }
 
 export default App;
