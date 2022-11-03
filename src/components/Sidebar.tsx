@@ -1,5 +1,6 @@
 import React from "react";
-import { useAppSelector } from "../redux/store";
+import { useAppDispatch, useAppSelector } from "../redux/store";
+import { setActiveBoard } from "../redux/slices/kanbanSlice";
 import { motion } from "framer-motion";
 import { BiHide } from "react-icons/bi";
 import { BsWindowSidebar } from "react-icons/bs";
@@ -21,7 +22,7 @@ const animation = {
 const styles = {
   btn: "flex gap-3 items-center mb-3 text-gray-400 w-5/6 text-left pl-5 py-3 rounded-r-full transition hover:text-violet-500 border border-transparent hover:border-violet-700",
   activeBtn:
-    "flex gap-3 items-center mb-3 bg-violet-700 w-5/6 text-left pl-5 py-3 rounded-r-full transition hover:bg-violet-600",
+    "flex gap-3 items-center mb-3 bg-violet-700 w-5/6 text-left pl-5 py-3 rounded-r-full transition hover:bg-violet-600 border border-violet-700",
 };
 
 interface Props {
@@ -30,7 +31,8 @@ interface Props {
 }
 
 const Sidebar: React.FC<Props> = ({ isVisible, toogleVisible }) => {
-  const boards = useAppSelector((state) => state.kanban.boards);
+  const { boards, activeBoard } = useAppSelector((state) => state.kanban);
+  const dispatch = useAppDispatch();
 
   return (
     <motion.ul
@@ -46,7 +48,13 @@ const Sidebar: React.FC<Props> = ({ isVisible, toogleVisible }) => {
           </h3>
           <div>
             {boards.map((board) => (
-              <button className={styles.btn}>
+              <button
+                key={board.id}
+                onClick={() => dispatch(setActiveBoard(board.id))}
+                className={
+                  board.id === activeBoard ? styles.activeBtn : styles.btn
+                }
+              >
                 <BsWindowSidebar /> {board.title}
               </button>
             ))}

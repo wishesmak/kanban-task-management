@@ -3,7 +3,7 @@ export type StatusType = "todo" | "doing" | "done";
 export interface ITodo {}
 
 export interface IBoard {
-  id: string;
+  id: number;
   title: string;
-  todos: { todo: []; doing: []; done: [] };
+  todos: { todo: string[]; doing: string[]; done: string[] };
 }
