@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/store";
-import { setActiveBoard } from "../redux/slices/kanbanSlice";
+import { createBoard, setActiveBoard } from "../redux/slices/kanbanSlice";
 import { motion } from "framer-motion";
 import { BiHide } from "react-icons/bi";
 import { BsWindowSidebar } from "react-icons/bs";
+import { useToggle } from "../hooks";
+import { Input, Button } from "../ui";
 
 const animation = {
   container: {
@@ -31,8 +33,16 @@ interface Props {
 }
 
 const Sidebar: React.FC<Props> = ({ isVisible, toogleVisible }) => {
-  const { boards, activeBoard } = useAppSelector((state) => state.kanban);
+  const { boards, activeBoardId } = useAppSelector((state) => state.kanban);
+  const [isCreateBoardVisible, toggleIsCreateBoardVisible] = useToggle(false);
+  const [newBoardTitle, setNewBoardTitle] = useState("");
   const dispatch = useAppDispatch();
+
+  const createBoardHandler = () => {
+    dispatch(createBoard(newBoardTitle));
+    setNewBoardTitle("");
+    toggleIsCreateBoardVisible();
+  };
 
   return (
     <motion.ul
@@ -52,13 +62,35 @@ const Sidebar: React.FC<Props> = ({ isVisible, toogleVisible }) => {
                 key={board.id}
                 onClick={() => dispatch(setActiveBoard(board.id))}
                 className={
-                  board.id === activeBoard ? styles.activeBtn : styles.btn
+                  board.id === activeBoardId ? styles.activeBtn : styles.btn
                 }
               >
                 <BsWindowSidebar /> {board.title}
               </button>
             ))}
           </div>
+          <button
+            onClick={toggleIsCreateBoardVisible}
+            className="mx-auto flex items-center gap-3 px-4 py-2 rounded-full text-violet-600 transition hover:bg-violet-600 hover:text-white "
+          >
+            <BsWindowSidebar />{" "}
+            {isCreateBoardVisible ? "Close Board Creator" : "Create New Board"}
+          </button>
+          {isCreateBoardVisible && (
+            <div className="text-center mt-3">
+              <Input
+                value={newBoardTitle}
+                onChangeHandler={(e) => setNewBoardTitle(e.target.value)}
+                placeholder="board title"
+              />
+              <Button
+                restStyles="w-fit mx-auto mt-3"
+                onClick={createBoardHandler}
+              >
+                Create
+              </Button>
+            </div>
+          )}
         </div>
         <div className="absolute bottom-0">
           <button

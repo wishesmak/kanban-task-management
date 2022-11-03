@@ -12,20 +12,7 @@ const initialState: IState = {
     {
       id: 1,
       title: "Board 1",
-      todos: [
-        {
-          id: 1,
-          title: "Make web site",
-          description: "description",
-          status: "todo",
-        },
-        {
-          id: 2,
-          title: "Exemple",
-          description: "description",
-          status: "done",
-        },
-      ],
+      todos: [],
     },
     {
       id: 2,
@@ -42,6 +29,15 @@ const kanbanSlice = createSlice({
     setActiveBoard(state, { payload }) {
       state.activeBoardId = payload;
     },
+    createBoard(state, { payload }) {
+      if (!state.boards.find((board) => board.title === payload)) {
+        state.boards.push({
+          id: state.boards.length + 1,
+          title: payload,
+          todos: [],
+        });
+      }
+    },
     createTask(state, { payload }) {
       const activeBoard = state.boards.find(
         (board) => board.id === state.activeBoardId
@@ -55,6 +51,6 @@ const kanbanSlice = createSlice({
   },
 });
 
-export const { setActiveBoard, createTask } = kanbanSlice.actions;
+export const { setActiveBoard, createTask, createBoard } = kanbanSlice.actions;
 
 export default kanbanSlice.reducer;
