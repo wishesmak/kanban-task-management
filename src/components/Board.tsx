@@ -5,10 +5,10 @@ import { motion, useAnimationControls } from "framer-motion";
 import { useEffect } from "react";
 
 const Board = () => {
-  const activeBoard = useAppSelector((state) => state.kanban.activeBoard);
+  const activeBoardId = useAppSelector((state) => state.kanban.activeBoardId);
   const board = useAppSelector(
     (state) =>
-      state.kanban.boards.filter((board) => board.id === activeBoard)[0]
+      state.kanban.boards.filter((board) => board.id === activeBoardId)[0]
   );
   const todos: StatusType[] = ["todo", "doing", "done"];
 
@@ -36,11 +36,14 @@ const Board = () => {
             {todoTitle}
           </h5>
           <motion.div animate={controls}>
-            {board.todos[todoTitle].map((todo, i) => (
-              <div key={i} className="bg-gray-700 rounded-xl p-4 mb-4">
-                {todo}
-              </div>
-            ))}
+            {board.todos.map(
+              (todo, i) =>
+                todo.status === todoTitle && (
+                  <div key={i} className="bg-gray-700 rounded-xl p-4 mb-4">
+                    {todo.title}
+                  </div>
+                )
+            )}
           </motion.div>
         </div>
       ))}

@@ -6,9 +6,14 @@ import React from "react";
 interface Props {
   isVisible: boolean;
   toogleVisible: () => void;
+  setIsNewTaskPopup: (v: boolean) => void;
 }
 
-const Header: React.FC<Props> = ({ toogleVisible, isVisible }) => {
+const Header: React.FC<Props> = ({
+  toogleVisible,
+  isVisible,
+  setIsNewTaskPopup,
+}) => {
   return (
     <div className="bg-gray-700 w-full h-[80px] border-b border-gray-600 flex justify-between items-center px-6">
       <div className=" flex items-center gap-3">
@@ -16,11 +21,14 @@ const Header: React.FC<Props> = ({ toogleVisible, isVisible }) => {
           Platform Launch
         </h1>
         <motion.div animate={{ opacity: isVisible ? 0 : 1 }}>
-          <BiDownArrow className="cursor-pointer w-4 h-4" onClick={toogleVisible} />
+          <BiDownArrow
+            className="cursor-pointer w-4 h-4"
+            onClick={toogleVisible}
+          />
         </motion.div>
       </div>
       <div>
-        <Button onClick={() => {}}>+ Add New Task</Button>
+        <Button onClick={() => setIsNewTaskPopup(true)}>+ Add New Task</Button>
       </div>
     </div>
   );
