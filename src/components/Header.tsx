@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "../ui";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useAppSelector } from "../redux/store";
 
 interface Props {
   sidebarToggle: () => void;
@@ -8,9 +9,14 @@ interface Props {
 }
 
 const Header: React.FC<Props> = ({ sidebarToggle, sidebarVisible }) => {
+  const { boards, activeBoardId } = useAppSelector((state) => state.kanban);
+  const activeBoard = boards.find((board) => board.id === activeBoardId);
+
   return (
     <div className="border-b border-gray-500 p-5 flex justify-between items-center">
-      <h1 className="text-2xl font-semibold cursor-pointer">Platform Launch</h1>
+      <h1 className="text-2xl font-semibold cursor-pointer">
+        {activeBoard ? activeBoard.title : 'Kanban'}
+      </h1>
       <div className="flex items-center gap-5">
         <Button onClick={() => console.log("add new task")}>
           + Add New Task

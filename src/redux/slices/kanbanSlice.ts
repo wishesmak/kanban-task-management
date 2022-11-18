@@ -2,27 +2,44 @@ import { createSlice } from "@reduxjs/toolkit";
 import { IBoard, StatusType } from "../../types";
 
 interface IKanbanSlice {
-  activeBoardId: number;
+  activeBoardId: number | null;
   boards: IBoard[];
 }
 
 const initialState: IKanbanSlice = {
-  activeBoardId: 0,
+  activeBoardId: null,
   boards: [
-    {
-      id: 0,
-      title: "Platform Launch",
-      todos: [
-        { id: 0, title: "Drink coffee", status: "todo" },
-        { id: 1, title: "Swimming", status: "doing" },
-        { id: 2, title: "Swimming", status: "todo" },
-      ],
-    },
-    {
-      id: 1,
-      title: "Board 2",
-      todos: [{ id: 0, title: "Working", status: "todo" }],
-    },
+    // {
+    //   id: 0,
+    //   title: "Platform Launch",
+    //   todos: [
+    //     {
+    //       id: 0,
+    //       title: "Drink coffee",
+    //       status: "todo",
+    //       description: "Mmmmmm nyam",
+    //     },
+    //     {
+    //       id: 1,
+    //       title: "Swimming",
+    //       status: "doing",
+    //       description: "Mmmmmm nyam",
+    //     },
+    //     {
+    //       id: 2,
+    //       title: "Swimming",
+    //       status: "todo",
+    //       description: "Blabalbla balblalb blb al",
+    //     },
+    //   ],
+    // },
+    // {
+    //   id: 1,
+    //   title: "Board 2",
+    //   todos: [
+    //     { id: 0, title: "Working", status: "todo", description: "Mmmmmm nyam" },
+    //   ],
+    // },
   ],
 };
 
@@ -31,7 +48,7 @@ const kanbanSlice = createSlice({
   initialState,
   reducers: {
     // Set Active Board
-    setActiveBoard(state, { payload }: { payload: number }) {
+    setActiveBoardId(state, { payload }: { payload: number }) {
       state.activeBoardId = payload;
     },
 
@@ -55,7 +72,7 @@ const kanbanSlice = createSlice({
       {
         payload,
       }: {
-        payload: { title: string; description?: string; status: StatusType };
+        payload: { title: string; description: string; status: StatusType };
       }
     ) {
       const activeBoard = state.boards.find(
@@ -98,7 +115,7 @@ const kanbanSlice = createSlice({
 export default kanbanSlice.reducer;
 
 export const {
-  setActiveBoard,
+  setActiveBoardId,
   createBoard,
   removeBoard,
   createTask,

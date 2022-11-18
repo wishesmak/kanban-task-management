@@ -3,7 +3,7 @@ export type StatusType = "todo" | "doing" | "done";
 export interface ITodo {
   id: number;
   title: string;
-  description?: string;
+  description: string;
   status: StatusType;
 }
 
