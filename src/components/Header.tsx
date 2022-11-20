@@ -6,19 +6,24 @@ import { useAppSelector } from "../redux/store";
 interface Props {
   sidebarToggle: () => void;
   sidebarVisible: boolean;
+  setIsCreateTaskPopup: (value: boolean) => void;
 }
 
-const Header: React.FC<Props> = ({ sidebarToggle, sidebarVisible }) => {
+const Header: React.FC<Props> = ({
+  sidebarToggle,
+  sidebarVisible,
+  setIsCreateTaskPopup,
+}) => {
   const { boards, activeBoardId } = useAppSelector((state) => state.kanban);
   const activeBoard = boards.find((board) => board.id === activeBoardId);
 
   return (
     <div className="border-b border-gray-500 p-5 flex justify-between items-center">
-      <h1 className="text-2xl font-semibold cursor-pointer">
-        {activeBoard ? activeBoard.title : 'Kanban'}
+      <h1 className="text-2xl font-semibold">
+        {activeBoard ? activeBoard.title : "Kanban"}
       </h1>
       <div className="flex items-center gap-5">
-        <Button onClick={() => console.log("add new task")}>
+        <Button disabled={activeBoard ? false : true} onClick={() => setIsCreateTaskPopup(true)}>
           + Add New Task
         </Button>
         <div onClick={sidebarToggle} className="cursor-pointer">

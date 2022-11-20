@@ -9,37 +9,37 @@ interface IKanbanSlice {
 const initialState: IKanbanSlice = {
   activeBoardId: null,
   boards: [
-    // {
-    //   id: 0,
-    //   title: "Platform Launch",
-    //   todos: [
-    //     {
-    //       id: 0,
-    //       title: "Drink coffee",
-    //       status: "todo",
-    //       description: "Mmmmmm nyam",
-    //     },
-    //     {
-    //       id: 1,
-    //       title: "Swimming",
-    //       status: "doing",
-    //       description: "Mmmmmm nyam",
-    //     },
-    //     {
-    //       id: 2,
-    //       title: "Swimming",
-    //       status: "todo",
-    //       description: "Blabalbla balblalb blb al",
-    //     },
-    //   ],
-    // },
-    // {
-    //   id: 1,
-    //   title: "Board 2",
-    //   todos: [
-    //     { id: 0, title: "Working", status: "todo", description: "Mmmmmm nyam" },
-    //   ],
-    // },
+    {
+      id: 0,
+      title: "Platform Launch",
+      todos: [
+        {
+          id: 0,
+          title: "Drink coffee",
+          status: "todo",
+          description: "Mmmmmm nyam",
+        },
+        {
+          id: 1,
+          title: "Swimming",
+          status: "doing",
+          description: "Mmmmmm nyam",
+        },
+        {
+          id: 2,
+          title: "Swimming",
+          status: "todo",
+          description: "Blabalbla balblalb blb al",
+        },
+      ],
+    },
+    {
+      id: 1,
+      title: "Board 2",
+      todos: [
+        { id: 0, title: "Working", status: "todo", description: "Mmmmmm nyam" },
+      ],
+    },
   ],
 };
 
@@ -54,11 +54,17 @@ const kanbanSlice = createSlice({
 
     // Create Board
     createBoard(state, { payload }: { payload: string }) {
+      const newBoardId =
+        state.boards.length > 0
+          ? state.boards[state.boards.length - 1].id + 1
+          : 0;
       state.boards.push({
-        id: state.boards[-1].id + 1,
+        id: newBoardId,
         title: payload,
         todos: [],
       });
+
+      state.activeBoardId = newBoardId;
     },
 
     // Remove Board
@@ -79,7 +85,7 @@ const kanbanSlice = createSlice({
         (board) => board.id === state.activeBoardId
       );
       activeBoard?.todos.push({
-        id: activeBoard.todos[-1].id + 1,
+        id: activeBoard.todos[activeBoard.todos.length - 1].id + 1,
         title: payload.title,
         description: payload.description,
         status: payload.status,

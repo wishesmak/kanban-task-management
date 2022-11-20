@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { BsWindowSidebar } from "react-icons/bs";
 import { useAppDispatch, useAppSelector } from "../redux/store";
-import { setActiveBoardId } from "../redux/slices/kanbanSlice";
+import { createBoard, setActiveBoardId } from "../redux/slices/kanbanSlice";
+import { Button } from "../ui";
+import Input from "../ui/Input";
 
 const animation = {
   container: {
@@ -26,6 +28,15 @@ interface Props {
 const Sidebar: React.FC<Props> = ({ isVisible }) => {
   const dispatch = useAppDispatch();
   const { activeBoardId, boards } = useAppSelector((state) => state.kanban);
+
+  const [newBoardTitle, setNewBoardTitle] = useState("");
+
+  const createBoardHandler = () => {
+    if (newBoardTitle.length > 1) {
+      dispatch(createBoard(newBoardTitle));
+      setNewBoardTitle("");
+    }
+  };
 
   return (
     <motion.ul
@@ -52,6 +63,19 @@ const Sidebar: React.FC<Props> = ({ isVisible }) => {
               </li>
             ))}
           </ul>
+        </div>
+        <div className="flex flex-col items-center gap-3">
+          <Input
+            value={newBoardTitle}
+            onChange={(e) => setNewBoardTitle(e.target.value)}
+            placeholder="board title"
+          />
+          <Button
+            onClick={createBoardHandler}
+            disabled={newBoardTitle.length > 1 ? false : true}
+          >
+            Create Board
+          </Button>
         </div>
       </motion.li>
     </motion.ul>
