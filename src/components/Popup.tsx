@@ -1,4 +1,6 @@
 import React, { useRef } from "react";
+import { setEditableTaskId } from "../redux/slices/kanbanSlice";
+import { useAppDispatch } from "../redux/store";
 
 interface Props {
   children: React.ReactNode;
@@ -8,9 +10,13 @@ interface Props {
 
 const Popup: React.FC<Props> = ({ children, restStyles, setIsVisible }) => {
   const divRef = useRef<HTMLDivElement>(null);
+  const dispatch = useAppDispatch();
 
   const onClickHandler = (e: any) => {
-    if (e.target === divRef.current) setIsVisible(false);
+    if (e.target === divRef.current) {
+      setIsVisible(false);
+      dispatch(setEditableTaskId(null));
+    }
   };
 
   return (

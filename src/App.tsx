@@ -1,5 +1,11 @@
-import React, { useState } from "react";
-import { Board, Header, Sidebar, Popup, CreateTaskPopup } from "./components";
+import { useState } from "react";
+import {
+  Board,
+  Header,
+  Sidebar,
+  CreateTaskPopup,
+  EditTaskPopup,
+} from "./components";
 import useToggle from "./hooks/useToggle";
 function App() {
   const [sidebarVisible, sidebarToggle] = useToggle(true);
@@ -22,7 +28,7 @@ function App() {
           <CreateTaskPopup setIsCreateTaskPopup={setIsCreateTaskPopup} />
         )}
         {isEditTaskPopup && (
-          <Popup setIsVisible={setIsEditTaskPopup}>Edit task</Popup>
+          <EditTaskPopup setIsEditTaskPopup={setIsEditTaskPopup} />
         )}
       </div>
     </div>

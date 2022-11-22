@@ -1,13 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 import { IBoard, StatusType } from "../../types";
 
 interface IKanbanSlice {
   activeBoardId: number | null;
+  editableTaskId: number | null;
   boards: IBoard[];
 }
 
 const initialState: IKanbanSlice = {
   activeBoardId: null,
+  editableTaskId: null,
   boards: [
     {
       id: 0,
@@ -27,7 +29,7 @@ const initialState: IKanbanSlice = {
         },
         {
           id: 2,
-          title: "Swimming",
+          title: "dasdadsadasdasdasd",
           status: "todo",
           description: "Blabalbla balblalb blb al",
         },
@@ -48,8 +50,13 @@ const kanbanSlice = createSlice({
   initialState,
   reducers: {
     // Set Active Board
-    setActiveBoardId(state, { payload }: { payload: number }) {
+    setActiveBoardId(state, { payload }: { payload: number | null }) {
       state.activeBoardId = payload;
+    },
+
+    // Set Editable Task
+    setEditableTaskId(state, { payload }: { payload: number | null }) {
+      state.editableTaskId = payload;
     },
 
     // Create Board
@@ -93,25 +100,28 @@ const kanbanSlice = createSlice({
     },
 
     // Remove Task
-    removeTask(state, { payload }: { payload: number }) {
-      const activeBoard = state.boards.find(
+    removeTask(state) {
+      let activeBoard = state.boards.find(
         (board) => board.id === state.activeBoardId
       );
-      activeBoard?.todos.filter((todo) => todo.id !== payload);
+
+      if (activeBoard)
+        activeBoard.todos = activeBoard.todos.filter(
+          (todo) => todo.id !== state.editableTaskId
+        );
     },
 
     // Change Task Status
-    changeTaskStatus(
-      state,
-      { payload }: { payload: { id: number; status: StatusType } }
-    ) {
+    changeTaskStatus(state, { payload }: { payload: StatusType }) {
       const activeBoard = state.boards.find(
         (board) => board.id === state.activeBoardId
       );
       if (activeBoard) {
-        const todo = activeBoard.todos.find((todo) => todo.id === payload.id);
+        const todo = activeBoard.todos.find(
+          (todo) => todo.id === state.editableTaskId
+        );
         if (todo) {
-          todo.status = payload.status;
+          todo.status = payload;
         }
       }
     },
@@ -127,4 +137,5 @@ export const {
   createTask,
   removeTask,
   changeTaskStatus,
+  setEditableTaskId,
 } = kanbanSlice.actions;

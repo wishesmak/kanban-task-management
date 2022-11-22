@@ -23,7 +23,7 @@ const CreateTaskPopup: React.FC<Props> = ({ setIsCreateTaskPopup }) => {
 
   const createTaskHandler = () => {
     dispatch(createTask(formData));
-    setIsCreateTaskPopup(false)
+    setIsCreateTaskPopup(false);
   };
 
   return (
@@ -61,12 +61,17 @@ const CreateTaskPopup: React.FC<Props> = ({ setIsCreateTaskPopup }) => {
             <select
               value={formData.status}
               onChange={(e) =>
-                setFormData({ ...formData, status: e.target.value })
+                setFormData({
+                  ...formData,
+                  status: e.target.value as StatusType,
+                })
               }
               className="capitalize bg-gray-800 w-full outline-none text-gray-200 border border-gray-600 px-2 py-2 rounded-lg"
             >
               {statuses.map((status) => (
-                <option key={status}>{status}</option>
+                <option value={status} key={status}>
+                  {status}
+                </option>
               ))}
             </select>
           </label>
