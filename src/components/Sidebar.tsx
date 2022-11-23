@@ -69,6 +69,7 @@ const Sidebar: React.FC<Props> = ({ isVisible }) => {
             value={newBoardTitle}
             onChange={(e) => setNewBoardTitle(e.target.value)}
             placeholder="board title"
+            restStyles="w-2/3"
           />
           <Button
             onClick={createBoardHandler}

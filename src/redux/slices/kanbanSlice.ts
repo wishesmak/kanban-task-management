@@ -1,4 +1,4 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { IBoard, StatusType } from "../../types";
 
 interface IKanbanSlice {
@@ -10,39 +10,7 @@ interface IKanbanSlice {
 const initialState: IKanbanSlice = {
   activeBoardId: null,
   editableTaskId: null,
-  boards: [
-    {
-      id: 0,
-      title: "Platform Launch",
-      todos: [
-        {
-          id: 0,
-          title: "Drink coffee",
-          status: "todo",
-          description: "Mmmmmm nyam",
-        },
-        {
-          id: 1,
-          title: "Swimming",
-          status: "doing",
-          description: "Mmmmmm nyam",
-        },
-        {
-          id: 2,
-          title: "dasdadsadasdasdasd",
-          status: "todo",
-          description: "Blabalbla balblalb blb al",
-        },
-      ],
-    },
-    {
-      id: 1,
-      title: "Board 2",
-      todos: [
-        { id: 0, title: "Working", status: "todo", description: "Mmmmmm nyam" },
-      ],
-    },
-  ],
+  boards: [],
 };
 
 const kanbanSlice = createSlice({
